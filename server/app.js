@@ -1,14 +1,16 @@
+require('dotenv').config()
 const express = require('express')
+const MongoURL = process.env.MongoURL
 const mongoose = require('mongoose')
 const Thing = require('./models/thing')
 
-mongoose.connect('mongodb+srv://navanmapp:go_fullstack@openclassrooms.0z3ktlp.mongodb.net/?retryWrites=true&w=majority')
-.then(() => {
-    console.log('Successfully connected to MongoDB Atlas')
-}).catch((error) => {
-    console.log('Unable to connect to MongoDB Atlas')
-    console.error(error)
-})
+mongoose.connect(MongoURL)
+    .then(() => {
+        console.log('Successfully connected to MongoDB Atlas')
+    }).catch((error) => {
+        console.log('Unable to connect to MongoDB Atlas')
+        console.error(error)
+    })
 
 const app = express()
 
@@ -33,9 +35,9 @@ app.post('/part-one/all-stuff', (req, res, next) => {
         userId: req.body.userId,
     })
     thing.save().then(() => {
-            res.status(201).json({
+        res.status(201).json({
             message: 'Thing saved successfully'
-        }) 
+        })
     }).catch((error) => {
         res.status(400).json({
             error: error
@@ -85,7 +87,7 @@ app.put('/part-one/all-stuff:id', (req, res, next) => {
         userId: req.body.userId,
     })
 
-    thing.updateOne({_id: req.params.id}, thing).then(() => {
+    thing.updateOne({ _id: req.params.id }, thing).then(() => {
         res.status(201).json({
             message: 'Thing updated successfully'
         })
@@ -97,7 +99,7 @@ app.put('/part-one/all-stuff:id', (req, res, next) => {
 })
 
 app.delete('/part-one/all-stuff', (req, res, next) => {
-    Thing.deleteOne({_id: req.params.id}).then((thing) => {
+    Thing.deleteOne({ _id: req.params.id }).then((thing) => {
         res.status(200).json({
             message: 'Thing Deleted'
         })
