@@ -55,6 +55,19 @@ exports.putThing = (req, res, next) => {
 }
 
 exports.deleteThing = (req, res, next) => {
+    Thing.findOne({ _id: req.params.id }).then( (thing) => {
+        if (!thing) {
+            return res.status(404).json({
+                error: new Error('Thing not found')
+            })
+        }
+
+        if (thing.userId !== req.auth.userId) {
+            return res.status(400).json({
+                error: new Error('Unauthorized request')
+            })
+        } 
+    })
     Thing.deleteOne({ _id: req.params.id }).then((thing) => {
         res.status(200).json({
             message: 'Thing Deleted'
