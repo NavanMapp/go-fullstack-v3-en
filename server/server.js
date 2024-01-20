@@ -1,3 +1,5 @@
+require('dotenv').config()
+const PORT = process.env.PORT
 const http = require('http')
 const app = require('./app')
 
@@ -13,7 +15,7 @@ const normalizePort = val => {
       return false;
 }
 
-const port = normalizePort(process.env.PORT || '3000', console.log('Server is running on port 3000'))
+const port = normalizePort(PORT, console.log(`Server is running on port ${PORT}`))
 app.set('port', port)
 
 const errHandler = error => {

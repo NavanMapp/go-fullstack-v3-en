@@ -11,16 +11,17 @@ exports.createThing = (req, res, next) => {
         price: req.body.thing.price,
         userId: req.body.thing.userId 
     })
+    thing.save().then(() => {
+        res.status(201).json({
+            message: 'Post saved successfully'
+        })
+    }).catch((error) => {
+        res.status(400).json({
+            error: error
+        })
+    })
 }
-thing.save().then(() => {
-    res.status(201).json({
-        message: 'Post saved successfully'
-    })
-}).catch((error) => {
-    res.status(400).json({
-        error: error
-    })
-})
+
 
 exports.getOneThing = (req, res, next) => {
     Thing.findOne({
